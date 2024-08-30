@@ -1,0 +1,69 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.29.47.4906",
+      "templateHash": "17615646479049508978"
+    },
+    "name": "ALZ Bicep - Management Groups Module with Scope Escape",
+    "description": "ALZ Bicep Module to set up Management Group structure, using Scope Escaping feature of ARM to allow deployment not requiring tenant root scope access."
+  },
+  "parameters": {
+    "parTopLevelManagementGroupPrefix": {
+      "type": "string",
+      "defaultValue": "alz",
+      "minLength": 2,
+      "maxLength": 10,
+      "metadata": {
+        "description": "Prefix used for the management group hierarchy. This management group will be created as part of the deployment."
+      }
+    },
+    "parTopLevelManagementGroupSuffix": {
+      "type": "string",
+      "defaultValue": "",
+      "maxLength": 10,
+      "metadata": {
+        "description": "Optional suffix for the management group hierarchy. This suffix will be appended to management group names/IDs. Include a preceding dash if required. Example: -suffix"
+      }
+    },
+    "parTopLevelManagementGroupDisplayName": {
+      "type": "string",
+      "defaultValue": "Azure Landing Zones",
+      "minLength": 2,
+      "metadata": {
+        "description": "Display name for top level management group. This name will be applied to the management group prefix defined in parTopLevelManagementGroupPrefix parameter."
+      }
+    },
+    "parTopLevelManagementGroupParentId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional parent for Management Group hierarchy, used as intermediate root Management Group parent, if specified. If empty, default, will deploy beneath Tenant Root Management Group."
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Management/managementGroups",
+      "apiVersion": "2023-04-01",
+      "scope": "/",
+      "name": "[format('{0}{1}', parameters('parTopLevelManagementGroupPrefix'), parameters('parTopLevelManagementGroupSuffix'))]",
+      "properties": {
+        "displayName": "[parameters('parTopLevelManagementGroupDisplayName')]",
+        "details": {
+          "parent": {
+            "id": "[if(empty(parameters('parTopLevelManagementGroupParentId')), format('/providers/Microsoft.Management/managementGroups/{0}', tenant().tenantId), if(contains(toLower(parameters('parTopLevelManagementGroupParentId')), toLower('/providers/Microsoft.Management/managementGroups/')), parameters('parTopLevelManagementGroupParentId'), format('/providers/Microsoft.Management/managementGroups/{0}', parameters('parTopLevelManagementGroupParentId'))))]"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "outTopLevelManagementGroupId": {
+      "type": "string",
+      "value": "[tenantResourceId('Microsoft.Management/managementGroups', format('{0}{1}', parameters('parTopLevelManagementGroupPrefix'), parameters('parTopLevelManagementGroupSuffix')))]"
+    }
+  }
+}
