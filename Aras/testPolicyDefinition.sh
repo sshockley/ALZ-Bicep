@@ -28,7 +28,7 @@ parPolicyDefinitionParameters="{\"parTargetManagementGroupId\":{\"value\":\"${MG
 
 dateYMD=$(date +%Y%m%dT%H%M%S%NZ)
 NAME="alz-PolicyDefsDefaults-${dateYMD}"
-TEMPLATEFILE="infra-as-code/bicep/modules/policy/definitions/usgov-customPolicyDefinitions.bicep"
+TEMPLATEFILE="infra-as-code/bicep/modules/policy/definitions/mg-customPolicyDefinitions.bicep"
 PARAMETERS="@infra-as-code/bicep/modules/policy/definitions/parameters/customPolicyDefinitions.parameters.all.json"
 
 #echo ${parPolicyAssignmentParameters}
