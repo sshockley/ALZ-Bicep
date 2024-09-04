@@ -270,7 +270,8 @@ function New-PolicyAssignmentsBicepInputTxtFile {
   Set-Content -Path "$rootPath/$assignmentsLongPath/$assignmentsTxtFileName" -Value $null -Encoding "utf8"
 
   Write-Information "====> Looping Through Policy Assignments:" -InformationAction Continue
-  Get-ChildItem -Recurse -Path "$rootPath/$assignmentsLongPath" -Filter "*.json" | ForEach-Object {
+  #Get-ChildItem -Recurse -Path "$rootPath/$assignmentsLongPath" -Filter "*.json" | ForEach-Object {
+  Get-ChildItem -Recurse -Path "./infra-as-code/bicep/modules/policy/assignments/lib/policy_assignments" -Filter "*.json" | ForEach-Object {
     $policyAssignment = Get-Content $_.FullName | ConvertFrom-Json -Depth 100
 
     $policyAssignmentName = $policyAssignment.name
