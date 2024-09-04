@@ -352,3 +352,9 @@ MigrationBackup/
 .vscode/settings.json
 
 .DS_Store
+
+# Exclude automatically generated policy definitions/sets for USGov for now
+infra-as-code/bicep/modules/policy/definitions/lib/usgovernment/policy_definitions/_mg_policyDefinitionsBicepInput.txt
+infra-as-code/bicep/modules/policy/definitions/lib/usgovernment/policy_definitions/policy_definition_es_mg_*.json
+infra-as-code/bicep/modules/policy/definitions/lib/usgovernment/policy_set_definitions/_mg_policySetDefinitionsBicepInput.txt
+infra-as-code/bicep/modules/policy/definitions/lib/usgovernment/policy_set_definitions/policy_set_definition_es_mg_*.json
